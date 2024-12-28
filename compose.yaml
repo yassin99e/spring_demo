@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: my_database
+    ports:
+      - '5434:5432'
+    networks:
+      - postgres_network    # Ajout du réseau
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres_network    # Même réseau que postgres
+    depends_on:
+      - postgres           # Ajoute une dépendance à postgres
+
+networks:
+  postgres_network:        # Définition du réseau
+    driver: bridge
